@@ -10,7 +10,7 @@ import (
 
 // DataPoint represents an Alpha order chart data point
 type DataPoint struct {
-	Timestamp int16   `json:"timestamp"`
+	Timestamp int64   `json:"timestamp"`
 	Price     float32 `json:"price"`
 }
 
@@ -22,8 +22,15 @@ func readFile(path string) {
 
 	var arr []DataPoint
 	byteValue, _ := ioutil.ReadAll(jsonFile)
-
 	_ = json.Unmarshal(byteValue, &arr)
+
+	for i := 1; i < len(arr); i++ {
+		if arr[i].Price > arr[i-1].Price {
+			fmt.Println("High")
+		} else {
+			fmt.Println("Low")
+		}
+	}
 
 	defer jsonFile.Close()
 }
